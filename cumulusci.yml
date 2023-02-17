@@ -1,0 +1,28 @@
+minimum_cumulusci_version: '3.68.1'
+project:
+    name: The-Diamond-Classic
+    package:
+        name: The-Diamond-Classic
+        api_version: '55.0'
+    git:
+        default_branch: 'main'
+        prefix_feature: 'feature/'
+        prefix_beta: 'beta/'
+        prefix_release: 'release/'
+    source_format: sfdx
+
+tasks:
+    robot:
+        options:
+            suites: robot/The-Diamond-Classic/tests
+            options:
+                outputdir: robot/The-Diamond-Classic/results
+
+    robot_testdoc:
+        options:
+            path: robot/The-Diamond-Classic/tests
+            output: robot/The-Diamond-Classic/doc/The-Diamond-Classic_tests.html
+
+    run_tests:
+        options:
+            required_org_code_coverage_percent: 75
