@@ -1,0 +1,15 @@
+.input-fields {
+  display: flex;
+  flex-wrap: wrap;
+}
+.controls {
+  display: flex; 
+  align-items: flex-end;
+  width: 100%;
+}
+.checkbox-group {
+  max-width: 30%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}

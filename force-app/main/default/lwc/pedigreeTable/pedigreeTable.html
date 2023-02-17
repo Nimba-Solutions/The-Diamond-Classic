@@ -1,0 +1,32 @@
+<template>
+    <lightning-card title="Pedigree Table">
+        <div class="slds-card__body">
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="slds-cell-wrap" scope="col">
+                            <div class="slds-truncate" title="Name"> </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={horses} for:item="horse">
+                        <tr key={horse.id}>
+                            <td class="slds-cell-wrap">
+                                <c-pedigree-table-row key={horse.id} horse={horse} onaddhorse={handleAddHorse} onremovehorse={handleRemoveHorse} id-index={idIndex}></c-pedigree-table-row>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>  
+            </table>
+            <div class="slds-m-top_large slds-m-right_large">
+                <lightning-button-icon class="slds-float--right" icon-name="utility:add" variant="border-filled" onclick={handleAddHorse}></lightning-button-icon>
+            </div>
+        </div>
+        </br>
+        </br>
+        <footer class="slds-card__footer slds-text-align_right">
+            <lightning-button label="Submit" variant="brand" onclick={handleSubmit}></lightning-button>
+        </footer>
+    </lightning-card>
+</template>
