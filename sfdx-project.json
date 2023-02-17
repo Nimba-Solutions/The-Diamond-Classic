@@ -1,1 +1,17 @@
-{"packageDirectories": [{"path": "force-app", "default": true}], "namespace": null, "sourceApiVersion": "55.0"}
+{
+    "packageDirectories": [
+      {
+        "path": "force-app",
+        "default": true,
+        "package": "Diamond Classic Core",
+        "versionName": "ver 0.3",
+        "versionNumber": "0.3.0.NEXT",
+        "versionDescription": ""
+      }
+    ],
+    "namespace": null,
+    "sourceApiVersion": "55.0",
+    "packageAliases": {
+      "Diamond Classic Core": "0Ho5w0000004CfACAU"
+    }
+  }
