@@ -1,0 +1,8 @@
+.dummy{
+	color : black;
+}
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
