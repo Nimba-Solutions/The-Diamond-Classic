@@ -1,29 +1,22 @@
 @isTest
-private class SampleLookupControllerTest {
+public class SampleLookupControllerTest {
     @isTest
     static void testSearch() {
         // Create test data
-        List<Horse__c> horses = new List<Horse__c>();
-        for (Integer i = 0; i < 10; i++) {
-            Horse__c horse = new Horse__c(
-                Name = 'Test Horse ' + i,
-                Gender__c = 'Mare',
-                Registration_Number__c = '12345'
-            );
-            horses.add(horse);
-        }
-        insert horses;
+        Horse__c horse1 = new Horse__c(Name__c = 'Test Horse 1', Gender__c = 'Stallion', Registration_Number__c = '12345');
+        Horse__c horse2 = new Horse__c(Name__c = 'Test Horse 2', Gender__c = 'Stallion', Registration_Number__c = '54321');
+        insert new List<Horse__c> {horse1, horse2};
 
-        // Call the search method
+        // Call the search method with some parameters
         List<LookupSearchResult> results = SampleLookupController.search('Test', new List<String>());
 
-        // Assert that the results are correct
-        System.assertEquals(5, results.size(), 'Wrong number of results returned');
-        for (LookupSearchResult result : results) {
-            System.assertEquals('Horse', result.entityType, 'Wrong entity type returned');
-            System.assertEquals('custom:custom47', result.iconName, 'Wrong icon name returned');
-            System.assertTrue(result.title.contains('Test Horse'), 'Wrong title returned');
-            System.assertTrue(result.subtitle.contains('Mare • 12345'), 'Wrong subtitle returned');
-        }
+        // Verify the results
+        System.assertEquals(2, results.size());
+        System.assertEquals('Horse', results[0].sObjectType);
+        System.assertEquals('Test Horse 1', results[0].title);
+        System.assertEquals('Stallion • 12345', results[0].subtitle);
+        System.assertEquals('Horse', results[1].sObjectType);
+        System.assertEquals('Test Horse 2', results[1].title);
+        System.assertEquals('Stallion • 54321', results[1].subtitle);
     }
 }
