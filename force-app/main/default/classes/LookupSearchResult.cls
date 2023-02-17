@@ -2,12 +2,12 @@
  * Class used to serialize a single Lookup search result item
  * The Lookup controller returns a List<LookupSearchResult> when sending search result back to Lightning
  */
-public virtual class LookupSearchResult implements Comparable {
-    protected String id;
-    protected String sObjectType;
-    protected String icon;
-    protected String title;
-    protected String subtitle;
+global virtual class LookupSearchResult implements Comparable {
+    @TestVisible protected String id;
+    @TestVisible protected String sObjectType;
+    @TestVisible protected String icon;
+    @TestVisible protected String title;
+    @TestVisible protected String subtitle;
 
     protected LookupSearchResult() {
     }

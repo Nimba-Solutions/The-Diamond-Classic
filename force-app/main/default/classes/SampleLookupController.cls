@@ -1,10 +1,8 @@
-public with sharing class SampleLookupController {
+public without sharing class SampleLookupController {
     private final static Integer MAX_RESULTS = 5;
 
     @AuraEnabled(cacheable=true scope='global')
     public static List<LookupSearchResult> search(String searchTerm, List<String> selectedIds) {
-        system.debug('IN SEARCH()');
-        system.debug('search term: '+ searchTerm);
         // Prepare query parameters
         searchTerm += '*';
 
