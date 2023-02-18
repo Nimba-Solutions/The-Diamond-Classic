@@ -1,4 +1,4 @@
-public with sharing class PedigreeTableController {
+public without sharing class PedigreeTableController {
     public class HorseWrapper {
         @AuraEnabled public Boolean APHA;
         @AuraEnabled public Boolean APHC;
