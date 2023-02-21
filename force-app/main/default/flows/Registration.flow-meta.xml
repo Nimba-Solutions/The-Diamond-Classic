@@ -4,8 +4,8 @@
     <assignments>
         <name>AssignLeadValues</name>
         <label>AssignLeadValues</label>
-        <locationX>1057</locationX>
-        <locationY>447</locationY>
+        <locationX>1054</locationX>
+        <locationY>438</locationY>
         <assignmentItems>
             <assignToReference>Lead.FirstName</assignToReference>
             <operator>Assign</operator>
@@ -83,6 +83,64 @@
                 <elementReference>Country</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>createLead</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>AssignLeadValues_0</name>
+        <label>AssignLeadValues</label>
+        <locationX>1115</locationX>
+        <locationY>483</locationY>
+        <assignmentItems>
+            <assignToReference>Lead.FirstName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LeadFirst_Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.LastName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LeadLast_Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.Phone</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LeadPhone.value</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.Email</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LeadEmail.value</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.Company</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>fxBusinessName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.IsBusiness__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Are_you_registering_your_business</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.Country</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Country</elementReference>
+            </value>
+        </assignmentItems>
         <assignmentItems>
             <assignToReference>Lead.State</assignToReference>
             <operator>Assign</operator>
@@ -137,7 +195,7 @@
         <locationX>824</locationX>
         <locationY>377</locationY>
         <defaultConnector>
-            <targetReference>AssignLeadValues</targetReference>
+            <targetReference>RegionValue</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -154,6 +212,31 @@
                 <targetReference>Reject</targetReference>
             </connector>
             <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>RegionValue</name>
+        <label>RegionValue</label>
+        <locationX>901</locationX>
+        <locationY>490</locationY>
+        <defaultConnector>
+            <targetReference>AssignLeadValues</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>USA</defaultConnectorLabel>
+        <rules>
+            <name>CAN</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Country</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Canada</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AssignLeadValues_0</targetReference>
+            </connector>
+            <label>CAN</label>
         </rules>
     </decisions>
     <description>A basic registration form for Farms and Stallion Stations</description>
