@@ -4,8 +4,8 @@
     <assignments>
         <name>AssignLeadValues</name>
         <label>AssignLeadValues</label>
-        <locationX>1057</locationX>
-        <locationY>447</locationY>
+        <locationX>1054</locationX>
+        <locationY>438</locationY>
         <assignmentItems>
             <assignToReference>Lead.FirstName</assignToReference>
             <operator>Assign</operator>
@@ -38,28 +38,28 @@
             <assignToReference>Lead.Street</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>LeadAddress.street</elementReference>
+                <elementReference>USAddress.street</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>Lead.City</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>LeadAddress.city</elementReference>
+                <elementReference>USAddress.city</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>Lead.State</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>LeadAddress.province</elementReference>
+                <elementReference>USAddress.province</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>Lead.PostalCode</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>LeadAddress.postalCode</elementReference>
+                <elementReference>USAddress.postalCode</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -76,17 +76,126 @@
                 <elementReference>Are_you_registering_your_business</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.Country</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Country</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>createLead</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>AssignLeadValues_0</name>
+        <label>AssignLeadValues</label>
+        <locationX>1115</locationX>
+        <locationY>483</locationY>
+        <assignmentItems>
+            <assignToReference>Lead.FirstName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LeadFirst_Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.LastName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LeadLast_Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.Phone</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LeadPhone.value</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.Email</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LeadEmail.value</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.Company</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>fxBusinessName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.IsBusiness__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Are_you_registering_your_business</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.Country</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Country</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.State</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CanadaAddress.province</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.Street</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CanadaAddress.street</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.PostalCode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CanadaAddress.postalCode</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Lead.City</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CanadaAddress.city</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>createLead</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <name>Canada</name>
+        <choiceText>Canada</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Canada</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>USA</name>
+        <choiceText>USA</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>USA</stringValue>
+        </value>
+    </choices>
     <decisions>
         <name>DoesLeadExist</name>
         <label>DoesLeadExist</label>
         <locationX>824</locationX>
         <locationY>377</locationY>
         <defaultConnector>
-            <targetReference>AssignLeadValues</targetReference>
+            <targetReference>RegionValue</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -103,6 +212,31 @@
                 <targetReference>Reject</targetReference>
             </connector>
             <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>RegionValue</name>
+        <label>RegionValue</label>
+        <locationX>901</locationX>
+        <locationY>490</locationY>
+        <defaultConnector>
+            <targetReference>AssignLeadValues</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>USA</defaultConnectorLabel>
+        <rules>
+            <name>CAN</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Country</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Canada</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AssignLeadValues_0</targetReference>
+            </connector>
+            <label>CAN</label>
         </rules>
     </decisions>
     <description>A basic registration form for Farms and Stallion Stations</description>
@@ -252,32 +386,6 @@
                     <isRequired>true</isRequired>
                     <storeOutputAutomatically>true</storeOutputAutomatically>
                 </fields>
-                <fields>
-                    <name>LeadAddress</name>
-                    <extensionName>flowruntime:address</extensionName>
-                    <fieldType>ComponentInstance</fieldType>
-                    <inputParameters>
-                        <name>addressLabel</name>
-                        <value>
-                            <stringValue>Mailing Address</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>inputProvinceOptions</name>
-                        <value>
-                            <stringValue>Alabama, Alaska, American Samoa, Arizona, Arkansas, California, Colorado, Connecticut, Delaware, District of Columbia, Florida, Georgia, Guam, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana, Maine, Maryland, Massachusetts, Michigan, Minnesota, Minor Outlying Islands, Mississippi, Missouri, Montana, Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina, North Dakota, Northern Mariana Islands, Ohio, Oklahoma, Oregon, Pennsylvania, Puerto Rico, Rhode Island, South Carolina, South Dakota, Tennessee, Texas, U.S. Virgin Islands, Utah, Vermont, Virginia, Washington, West Virginia, Wisconsin, Wyoming</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>inputCountryOptions</name>
-                        <value>
-                            <stringValue>USA</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-                    <isRequired>true</isRequired>
-                    <storeOutputAutomatically>true</storeOutputAutomatically>
-                </fields>
                 <inputParameters>
                     <name>width</name>
                     <value>
@@ -294,6 +402,109 @@
             <fieldType>RegionContainer</fieldType>
             <fields>
                 <name>Lead_Details_Section2_Column1</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <fields>
+            <name>MailingAddressLabel</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Mailing Address&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Country</name>
+            <choiceReferences>USA</choiceReferences>
+            <choiceReferences>Canada</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Country of residence</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>USAddress</name>
+            <extensionName>flowruntime:address</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>addressLabel</name>
+                <value>
+                    <stringValue> </stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>inputProvinceOptions</name>
+                <value>
+                    <stringValue>Alabama, Alaska, American Samoa, Arizona, Arkansas, California, Colorado, Connecticut, Delaware, District of Columbia, Florida, Georgia, Guam, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana, Maine, Maryland, Massachusetts, Michigan, Minnesota, Minor Outlying Islands, Mississippi, Missouri, Montana, Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina, North Dakota, Northern Mariana Islands, Ohio, Oklahoma, Oregon, Pennsylvania, Puerto Rico, Rhode Island, South Carolina, South Dakota, Tennessee, Texas, U.S. Virgin Islands, Utah, Vermont, Virginia, Washington, West Virginia, Wisconsin, Wyoming</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>country</name>
+                <value>
+                    <elementReference>USA</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Country</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <elementReference>USA</elementReference>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>CanadaAddress</name>
+            <extensionName>flowruntime:address</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>addressLabel</name>
+                <value>
+                    <stringValue> </stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>country</name>
+                <value>
+                    <elementReference>Canada</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>inputProvinceOptions</name>
+                <value>
+                    <stringValue>Alberta, British Columbia, Manitoba, New Brunswick, Newfoundland and Labrador, Northwest Territories, Nova Scotia, Nunavut, Ontario, Prince Edward Island, Quebec, Saskatchewan, Yukon</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Country</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <elementReference>Canada</elementReference>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Lead_Details_Section3</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Lead_Details_Section3_Column1</name>
                 <fieldType>Region</fieldType>
                 <inputParameters>
                     <name>width</name>
