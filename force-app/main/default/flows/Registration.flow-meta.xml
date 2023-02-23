@@ -520,7 +520,7 @@
         <fields>
             <name>Are_you_registering_your_business</name>
             <dataType>Boolean</dataType>
-            <fieldText>Are you registering your business?</fieldText>
+            <fieldText>Would you like to add your business or farm details?</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
@@ -534,7 +534,7 @@
                 <fields>
                     <name>Business_Name</name>
                     <dataType>String</dataType>
-                    <fieldText>Business Name</fieldText>
+                    <fieldText>Business/Farm Name</fieldText>
                     <fieldType>InputField</fieldType>
                     <isRequired>true</isRequired>
                 </fields>
