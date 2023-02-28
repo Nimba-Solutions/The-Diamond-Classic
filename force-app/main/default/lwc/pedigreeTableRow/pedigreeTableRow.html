@@ -40,7 +40,7 @@
                     <lightning-input type="checkbox" label="Nominate to Compete ($250)" name="IsCompeting__c" onchange={handleOnChange} uncheck> </lightning-input>
                     </br>
                     <lightning-input type="checkbox" label="Other" name="Other__c" onchange={handleOnChange} uncheck> </lightning-input>
-                    <lightning-input type="text" label="Other" name="Other_Breed_Association__c" onblur={handleUnfocus} variant="label-hidden" value={horse.Other_Breed_Association__c} onchange={handleOnChange}></lightning-input>
+                    <lightning-input type="text" label="Breeders' Association" name="Other_Breed_Association__c" onblur={handleUnfocus} variant="label-hidden" value={horse.Other_Breed_Association__c} onchange={handleOnChange} required={isOtherChecked}></lightning-input>
                   </div>
                 </div>
               </div>

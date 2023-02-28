@@ -50,6 +50,9 @@ export default class PedigreeTableRow extends LightningElement {
     let value = event.target.value;
     if (event.target.type === "checkbox") {
       value = event.target.checked;
+      if (event.target.name === "Other__c") {
+          this.isOtherChecked = event.target.checked;
+      }  
     }
     this.horse = { ...this.horse, [event.target.name]: value };
   }
