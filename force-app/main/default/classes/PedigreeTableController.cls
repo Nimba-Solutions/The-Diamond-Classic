@@ -6,6 +6,7 @@ public without sharing class PedigreeTableController {
         @AuraEnabled public Boolean TB;
         @AuraEnabled public Boolean Other;
         @AuraEnabled public Boolean IsCompeting;
+        @AuraEnabled public Boolean IsOwner; // Lots to do here!
         @AuraEnabled public String Id;
         @AuraEnabled public String Name;
         @AuraEnabled public String Registration_Number;
@@ -15,6 +16,10 @@ public without sharing class PedigreeTableController {
         @AuraEnabled public String Dam;
         @AuraEnabled public String Color;
         @AuraEnabled public String Other_Breed_Association;
+        @AuraEnabled public String OwnerFirstName;
+        @AuraEnabled public String OwnerLastName;
+        @AuraEnabled public String OwnerEmail;
+        @AuraEnabled public String OwnerPhone;
     }
 
     @AuraEnabled
@@ -54,10 +59,11 @@ public without sharing class PedigreeTableController {
         system.debug('Horse JSON: ' + horses);
 
         List<HorseWrapper> parsedJson = (List<HorseWrapper>) JSON.deserialize(horses, List<HorseWrapper>.class);
+        List<Affiliation__c> affiliations = new List<Affiliation__c>();
 
-        system.debug('Horse OBJ: ' + parsedJson);
         List<Horse__c> horsesToUpdate = new List<Horse__c>();
         for (HorseWrapper recordData : parsedJson) {
+            system.debug('recordData: '+ recordData);
             Horse__c horse = new Horse__c();
             horse.Id = recordData.Id;
             horse.Registration_Number__c = recordData.Registration_Number;
@@ -75,8 +81,54 @@ public without sharing class PedigreeTableController {
             horse.Other_Breed_Association__c = recordData.Other_Breed_Association;
             horse.IsCompeting__c = recordData.IsCompeting;
             horsesToUpdate.add(horse);
-        }
 
+            String ownerEmail = recordData.OwnerEmail;
+            system.debug('ownerEmail: '+ ownerEmail);
+            
+            // Check if the Form Submitter is the Owner
+            if (recordData.IsOwner == false || recordData.IsOwner == null) {
+                
+                // Create the affiliation record for the Owner
+                Affiliation__c affiliation = new Affiliation__c();
+                affiliation.Owner__c = true;
+                affiliation.Horse__c = recordData.Id;
+
+                String accountId;
+
+                // Check if the owner has an Account already
+                List<Account> accounts = Database.query('SELECT Id FROM Account WHERE Email__c =: ownerEmail LIMIT 1');
+                if (!accounts.isEmpty()) {
+                    accountId = accounts[0].Id;
+                }
+                if (accountId != null) {
+                    affiliation.Account__c = accountId;
+                } else {
+                    // Check if the owner has a Lead already
+                    String leadId;
+                    List<Lead> leads = Database.query('SELECT Id FROM Lead WHERE Email =: ownerEmail LIMIT 1');
+                    if (!leads.isEmpty()) {
+                        leadId = accounts[0].Id;
+                    }
+
+                    if (leadId != null) {
+                        affiliation.Lead__c = leadId;
+                    } else {
+                        Lead newLead = new Lead();
+                        newLead.FirstName = recordData.OwnerFirstName;
+                        newLead.LastName = recordData.OwnerLastName;
+                        newLead.Phone = recordData.OwnerPhone;
+                        newLead.Email = recordData.OwnerEmail;
+                        newLead.Company = recordData.OwnerFirstName + ' ' + recordData.OwnerLastName + '\'s Account';
+                        insert newLead;
+                        affiliation.Lead__c = newLead.Id;
+                    } 
+                }
+                affiliations.add(affiliation);
+            }
+        }
+        if (affiliations.size() > 0) {
+            insert affiliations;
+        }
         update horsesToUpdate;
     }
     
