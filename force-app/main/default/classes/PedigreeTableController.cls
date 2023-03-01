@@ -96,22 +96,14 @@ public without sharing class PedigreeTableController {
                 String accountId;
 
                 // Check if the owner has an Account already
-                List<Account> accounts = Database.query('SELECT Id FROM Account WHERE Email__c =: ownerEmail LIMIT 1');
+                List<Account> accounts = [SELECT Id FROM Account WHERE Email__c =: ownerEmail LIMIT 1];
                 if (!accounts.isEmpty()) {
-                    accountId = accounts[0].Id;
-                }
-                if (accountId != null) {
-                    affiliation.Account__c = accountId;
+                    affiliation.Account__c = accounts[0].Id;
                 } else {
                     // Check if the owner has a Lead already
-                    String leadId;
-                    List<Lead> leads = Database.query('SELECT Id FROM Lead WHERE Email =: ownerEmail LIMIT 1');
+                    List<Lead> leads = [SELECT Id FROM Lead WHERE Email = :ownerEmail LIMIT 1];
                     if (!leads.isEmpty()) {
-                        leadId = accounts[0].Id;
-                    }
-
-                    if (leadId != null) {
-                        affiliation.Lead__c = leadId;
+                        affiliation.Lead__c = leads[0].Id;
                     } else {
                         Lead newLead = new Lead();
                         newLead.FirstName = recordData.OwnerFirstName;
