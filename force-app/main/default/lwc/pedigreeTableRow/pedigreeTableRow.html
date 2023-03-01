@@ -4,7 +4,7 @@
     <tr>
       <td>
         <div class="slds-grid slds-wrap">
-          <div class="slds-col slds-small-size_6-of-12 slds-medium-size_12-of-12 slds-large-size_6-of-12">
+          <div class="slds-col slds-m-top_large slds-m-right_medium slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_3-of-12">
             <div class="input-fields slds-wrap ">
               <lightning-input type="text" name="Name__c" placeholder="Name" variant="label-hidden" value={horse.Name__c} onchange={handleOnChange} onblur={handleUnfocus} style="width: 130px;" required></lightning-input>
               <lightning-input type="text" name="Registration_Number__c" placeholder="Reg No." variant="label-hidden" value={horse.Registration_Number__c} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-input>
@@ -27,7 +27,7 @@
               </c-lookup>
             </div>
           </div>
-          <div class="slds-col slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_3-of-12">
+          <div class="slds-col slds-m-top_large slds-m-right_medium slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_2-of-12">
             <div class="checkbox-group">
               <div class="owner-info">
                 <lightning-input type="checkbox" name="Owner__c" value={horse.IsOwner} label="Do you own this horse?"  onchange={handleOnChange} checked> </lightning-input>
@@ -40,7 +40,7 @@
               </div>
             </div>
           </div>
-          <div class="slds-col slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_3-of-12">
+          <div class="slds-col slds-m-top_large slds-m-right_medium slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_3-of-12">
             <div class="checkbox-group">
               <div class="left">
                 <lightning-input name="AQHA__c" label="AQHA" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
@@ -58,7 +58,7 @@
               </div>
             </div>
           </div>
-          <div class="slds-col slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_3-of-12">
+          <div class="slds-col slds-m-top_large slds-m-right_medium slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_2-of-12">
             <div class="input-fields">
               <lightning-file-upload label="Upload Registration Papers and a Photo of your Horse"
                                     multiple="true"
@@ -70,10 +70,12 @@
               </lightning-file-upload>
             </div>
           </div>
+          <div class="slds-col slds-m-top_large slds-m-left_medium slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_1-of-12 slds-text-align_right slds-align-middle">
+            <div class="controls">
+              <lightning-button-icon class="slds-col slds-m-left_x_large" icon-name="utility:delete" variant="border-filled" onclick={removeRow} data-key={horse.id}></lightning-button-icon>
+            </div>
+          </div>
         </div>
-        </td>
-        <td>
-            <lightning-button-icon class="slds-m-left_x_large slds-col slds-size_2-of-12" icon-name="utility:delete" variant="border-filled" onclick={removeRow} data-key={horse.id}></lightning-button-icon>
         </td>
     </tr>
   </table>

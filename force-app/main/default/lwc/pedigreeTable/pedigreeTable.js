@@ -41,7 +41,8 @@ export default class PedigreeTable extends LightningElement {
     }
 
     handleRemoveHorse(event) {
-        this.horses = this.horses.filter(horse => horse.id !== event.detail.horseId);
+        console.log("ID TO DELETE: "+ event.detail.horseId);
+        this.horses = this.horses.filter(horse => horse.Id !== event.detail.horseId);
     }
 
     handleSubmit() {

@@ -78,7 +78,7 @@ export default class PedigreeTableRow extends LightningElement {
   removeRow() {
     const removeHorseEvent = new CustomEvent('removehorse', {
       detail: {
-        horseId: this.horse.id
+        horseId: this.horse.Id
       }
     });
     this.dispatchEvent(removeHorseEvent);
