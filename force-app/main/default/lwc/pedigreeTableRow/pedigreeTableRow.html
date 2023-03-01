@@ -32,10 +32,10 @@
               <div class="owner-info">
                 <lightning-input type="checkbox" name="Owner__c" value={horse.IsOwner} label="Do you own this horse?"  onchange={handleOnChange} checked> </lightning-input>
                 <template if:false={isOwnerChecked}>
-                  <lightning-input type="text" name="ownerFirstName" placeholder="First Name" label="Owner Details" value={horse.ownerFirstName} onchange={handleOnChange} onblur={handleUnfocus} style="width: 130px;" required></lightning-input>
-                  <lightning-input type="text" name="ownerLastName" placeholder="Last Name" variant="label-hidden" value={horse.ownerLastName} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-input>
-                  <lightning-input type="text" name="ownerEmail" placeholder="Email" variant="label-hidden" value={horse.ownerEmail} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-input>
-                  <lightning-input type="text" name="ownerPhone" placeholder="Phone" variant="label-hidden" value={horse.ownerPhone} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-input>
+                  <lightning-input type="text" name="OwnerFirstName" placeholder="First Name" label="Owner Details" value={horse.OwnerFirstName} onchange={handleOnChange} onblur={handleUnfocus} style="width: 130px;" required></lightning-input>
+                  <lightning-input type="text" name="OwnerLastName" placeholder="Last Name" variant="label-hidden" value={horse.OwnerLastName} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-input>
+                  <lightning-input type="email" name="OwnerEmail" placeholder="Email" variant="label-hidden" value={horse.OwnerEmail} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" message-when-pattern-mismatch="Please enter a valid email address." required></lightning-input>
+                  <lightning-input type="tel" name="OwnerPhone" placeholder="Phone" variant="label-hidden" value={horse.OwnerPhone} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" pattern="\d{10}" message-when-pattern-mismatch="Please enter a valid 10-digit phone number." required></lightning-input>
                 </template>
               </div>
             </div>
