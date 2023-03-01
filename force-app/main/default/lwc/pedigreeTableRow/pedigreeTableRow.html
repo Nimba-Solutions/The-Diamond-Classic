@@ -1,15 +1,16 @@
 <template>
+  <form>
   <table>
     <tr>
       <td>
         <div class="slds-grid slds-wrap">
-          <div class="slds-col slds-small-size_6-of-12 slds-medium-size_12-of-12 slds-large-size_6-of-12">
+          <div class="slds-col slds-m-top_large slds-m-right_medium slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_3-of-12">
             <div class="input-fields slds-wrap ">
-              <lightning-input type="text" name="Name__c" placeholder="Name" variant="label-hidden" value={horse.Name__c} onchange={handleOnChange} required onblur={handleUnfocus} style="width: 130px;"></lightning-input>
-              <lightning-input type="text" name="Registration_Number__c" placeholder="Reg No." variant="label-hidden" value={horse.Registration_Number__c} required onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;"></lightning-input>
-              <lightning-combobox name="Gender__c" placeholder="Gender" variant="label-hidden" value={horse.Gender__c} options={genderOptions} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;"></lightning-combobox>
-              <lightning-input type="date" name="Date_Foaled__c" placeholder="Date Foaled" variant="label-hidden" value={horse.Date_Foaled__c} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;"></lightning-input>
-              <lightning-input type="text" name="Color__c" placeholder="Color" variant="label-hidden" value={horse.Color__c} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;"></lightning-input>
+              <lightning-input type="text" name="Name__c" placeholder="Name" variant="label-hidden" value={horse.Name__c} onchange={handleOnChange} onblur={handleUnfocus} style="width: 130px;" required></lightning-input>
+              <lightning-input type="text" name="Registration_Number__c" placeholder="Reg No." variant="label-hidden" value={horse.Registration_Number__c} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-input>
+              <lightning-combobox name="Gender__c" placeholder="Gender" variant="label-hidden" value={horse.Gender__c} options={genderOptions} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-combobox>
+              <lightning-input type="date" name="Date_Foaled__c" placeholder="Date Foaled" variant="label-hidden" value={horse.Date_Foaled__c} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-input>
+              <lightning-input type="text" name="Color__c" placeholder="Color" variant="label-hidden" value={horse.Color__c} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-input>
               <c-lookup style="width: 130px;"
                         onsearch={handleSearch}
                         onselectionchange={handleSelectionChange}
@@ -26,41 +27,57 @@
               </c-lookup>
             </div>
           </div>
-          <div class="slds-col slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_3-of-12">
+          <div class="slds-col slds-m-top_large slds-m-right_medium slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_2-of-12">
             <div class="checkbox-group">
-              <div class="left">
-                  <lightning-input name="AQHA__c" label="AQHA" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
-                  <lightning-input name="APHA__c" label="APHA" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
-                  <lightning-input name="APHC__c" label="APHC" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
-                  <lightning-input name="TB__c" label="TB" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
-                </div>
-                <div>
-                  <div class="right">
-                    <lightning-input type="checkbox" label="Competing?" name="IsCompeting__c" onchange={handleOnChange} uncheck> </lightning-input>
-                    </br>
-                    <lightning-input type="checkbox" label="Other" name="Other__c" onchange={handleOnChange} uncheck> </lightning-input>
-                    <lightning-input type="text" label="Other" name="Other_Breed_Association__c" onblur={handleUnfocus} variant="label-hidden" value={horse.Other_Breed_Association__c} onchange={handleOnChange}></lightning-input>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="slds-col slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_3-of-12">
-              <div class="input-fields">
-                <lightning-file-upload label="Upload"
-                                      multiple="true"
-                                      record-id={horse.Id}
-                                      file-field-name="Guest_Record_fileupload__c"
-                                      file-field-value={encryptedToken}
-                                      onuploadfinished={handleUploadFinished}
-                                      class="slds-col slds-size_1-of-2">
-                </lightning-file-upload>
+              <div class="owner-info">
+                <lightning-input type="checkbox" name="Owner__c" value={horse.IsOwner} label="Do you own this horse?"  onchange={handleOnChange} checked> </lightning-input>
+                <template if:false={isOwnerChecked}>
+                  <lightning-input type="text" name="OwnerFirstName" placeholder="First Name" label="Owner Details" value={horse.OwnerFirstName} onchange={handleOnChange} onblur={handleUnfocus} style="width: 130px;" required></lightning-input>
+                  <lightning-input type="text" name="OwnerLastName" placeholder="Last Name" variant="label-hidden" value={horse.OwnerLastName} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-input>
+                  <lightning-input type="email" name="OwnerEmail" placeholder="Email" variant="label-hidden" value={horse.OwnerEmail} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" message-when-pattern-mismatch="Please enter a valid email address." required></lightning-input>
+                  <lightning-input type="tel" name="OwnerPhone" placeholder="Phone" variant="label-hidden" value={horse.OwnerPhone} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" pattern="\d{10}" message-when-pattern-mismatch="Please enter a valid 10-digit phone number." required></lightning-input>
+                </template>
               </div>
             </div>
           </div>
-        </td>
-        <td>
-            <lightning-button-icon class="slds-m-left_x_large slds-col slds-size_2-of-12" icon-name="utility:delete" variant="border-filled" onclick={removeRow} data-key={horse.id}></lightning-button-icon>
+          <div class="slds-col slds-m-top_large slds-m-right_medium slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_3-of-12">
+            <div class="checkbox-group">
+              <div class="left">
+                <lightning-input name="AQHA__c" label="AQHA" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
+                <lightning-input name="APHA__c" label="APHA" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
+                <lightning-input name="APHC__c" label="APHC" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
+                <lightning-input name="TB__c" label="TB" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
+              </div>
+              <div>
+                <div class="right">
+                  <lightning-input type="checkbox" label="Nominate to Compete ($250)" name="IsCompeting__c" onchange={handleOnChange} uncheck> </lightning-input>
+                  </br>
+                  <lightning-input type="checkbox" label="Other" name="Other__c" onchange={handleOnChange} uncheck> </lightning-input>
+                  <lightning-input type="text" label="Breeders' Association" name="Other_Breed_Association__c" onblur={handleUnfocus} variant="label-hidden" value={horse.Other_Breed_Association__c} onchange={handleOnChange} required={isOtherChecked}></lightning-input>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-m-top_large slds-m-right_medium slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_2-of-12">
+            <div class="input-fields">
+              <lightning-file-upload label="Upload Registration Papers and a Photo of your Horse"
+                                    multiple="true"
+                                    record-id={horse.Id}
+                                    file-field-name="Guest_Record_fileupload__c"
+                                    file-field-value={encryptedToken}
+                                    onuploadfinished={handleUploadFinished}
+                                    class="slds-col slds-size_1-of-2" required>
+              </lightning-file-upload>
+            </div>
+          </div>
+          <div class="slds-col slds-m-top_large slds-m-left_medium slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_1-of-12 slds-text-align_right slds-align-middle">
+            <div class="controls">
+              <lightning-button-icon class="slds-col slds-m-left_x_large" icon-name="utility:delete" variant="border-filled" onclick={removeRow} data-key={horse.id}></lightning-button-icon>
+            </div>
+          </div>
+        </div>
         </td>
     </tr>
   </table>
+  </form>
 </template>

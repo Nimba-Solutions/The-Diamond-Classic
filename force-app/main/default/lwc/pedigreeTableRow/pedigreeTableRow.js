@@ -7,6 +7,7 @@ export default class PedigreeTableRow extends LightningElement {
   @api uploadedFiles = [];
   @track sireId;
   @track damId;
+  @track isOwnerChecked = true;
 
   @track acceptedFormats = ['.png', '.jpg', '.jpeg'];
 
@@ -50,6 +51,15 @@ export default class PedigreeTableRow extends LightningElement {
     let value = event.target.value;
     if (event.target.type === "checkbox") {
       value = event.target.checked;
+
+      if (event.target.name === "Owner__c") {
+        this.isOwnerChecked = event.target.checked;
+      }
+
+      if (event.target.name === "Other__c") {
+          this.isOtherChecked = event.target.checked;
+      }  
+
     }
     this.horse = { ...this.horse, [event.target.name]: value };
   }
@@ -68,7 +78,7 @@ export default class PedigreeTableRow extends LightningElement {
   removeRow() {
     const removeHorseEvent = new CustomEvent('removehorse', {
       detail: {
-        horseId: this.horse.id
+        horseId: this.horse.Id
       }
     });
     this.dispatchEvent(removeHorseEvent);
