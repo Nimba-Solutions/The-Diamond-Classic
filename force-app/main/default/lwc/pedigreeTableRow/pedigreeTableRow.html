@@ -29,35 +29,48 @@
           </div>
           <div class="slds-col slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_3-of-12">
             <div class="checkbox-group">
-              <div class="left">
-                  <lightning-input name="AQHA__c" label="AQHA" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
-                  <lightning-input name="APHA__c" label="APHA" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
-                  <lightning-input name="APHC__c" label="APHC" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
-                  <lightning-input name="TB__c" label="TB" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
-                </div>
-                <div>
-                  <div class="right">
-                    <lightning-input type="checkbox" label="Nominate to Compete ($250)" name="IsCompeting__c" onchange={handleOnChange} uncheck> </lightning-input>
-                    </br>
-                    <lightning-input type="checkbox" label="Other" name="Other__c" onchange={handleOnChange} uncheck> </lightning-input>
-                    <lightning-input type="text" label="Breeders' Association" name="Other_Breed_Association__c" onblur={handleUnfocus} variant="label-hidden" value={horse.Other_Breed_Association__c} onchange={handleOnChange} required={isOtherChecked}></lightning-input>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="slds-col slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_3-of-12">
-              <div class="input-fields">
-                <lightning-file-upload label="Upload Registration Papers and a Photo of your Horse"
-                                      multiple="true"
-                                      record-id={horse.Id}
-                                      file-field-name="Guest_Record_fileupload__c"
-                                      file-field-value={encryptedToken}
-                                      onuploadfinished={handleUploadFinished}
-                                      class="slds-col slds-size_1-of-2" required>
-                </lightning-file-upload>
+              <div class="owner-info">
+                <lightning-input type="checkbox" name="Owner__c" value={horse.IsOwner} label="Do you own this horse?"  onchange={handleOnChange} checked> </lightning-input>
+                <template if:false={isOwnerChecked}>
+                  <lightning-input type="text" name="ownerFirstName" placeholder="First Name" label="Owner Details" value={horse.ownerFirstName} onchange={handleOnChange} onblur={handleUnfocus} style="width: 130px;" required></lightning-input>
+                  <lightning-input type="text" name="ownerLastName" placeholder="Last Name" variant="label-hidden" value={horse.ownerLastName} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-input>
+                  <lightning-input type="text" name="ownerEmail" placeholder="Email" variant="label-hidden" value={horse.ownerEmail} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-input>
+                  <lightning-input type="text" name="ownerPhone" placeholder="Phone" variant="label-hidden" value={horse.ownerPhone} onblur={handleUnfocus} onchange={handleOnChange} style="width: 130px;" required></lightning-input>
+                </template>
               </div>
             </div>
           </div>
+          <div class="slds-col slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_3-of-12">
+            <div class="checkbox-group">
+              <div class="left">
+                <lightning-input name="AQHA__c" label="AQHA" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
+                <lightning-input name="APHA__c" label="APHA" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
+                <lightning-input name="APHC__c" label="APHC" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
+                <lightning-input name="TB__c" label="TB" type="checkbox" onchange={handleOnChange} uncheck> </lightning-input>
+              </div>
+              <div>
+                <div class="right">
+                  <lightning-input type="checkbox" label="Nominate to Compete ($250)" name="IsCompeting__c" onchange={handleOnChange} uncheck> </lightning-input>
+                  </br>
+                  <lightning-input type="checkbox" label="Other" name="Other__c" onchange={handleOnChange} uncheck> </lightning-input>
+                  <lightning-input type="text" label="Breeders' Association" name="Other_Breed_Association__c" onblur={handleUnfocus} variant="label-hidden" value={horse.Other_Breed_Association__c} onchange={handleOnChange} required={isOtherChecked}></lightning-input>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_3-of-12">
+            <div class="input-fields">
+              <lightning-file-upload label="Upload Registration Papers and a Photo of your Horse"
+                                    multiple="true"
+                                    record-id={horse.Id}
+                                    file-field-name="Guest_Record_fileupload__c"
+                                    file-field-value={encryptedToken}
+                                    onuploadfinished={handleUploadFinished}
+                                    class="slds-col slds-size_1-of-2" required>
+              </lightning-file-upload>
+            </div>
+          </div>
+        </div>
         </td>
         <td>
             <lightning-button-icon class="slds-m-left_x_large slds-col slds-size_2-of-12" icon-name="utility:delete" variant="border-filled" onclick={removeRow} data-key={horse.id}></lightning-button-icon>
