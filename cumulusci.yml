@@ -2,10 +2,11 @@ minimum_cumulusci_version: '3.68.1'
 project:
     dependencies:
         - namespace: csca
+          version: 1.3
         - version_id: 04t6F000002YNcIQAW
     name: The-Diamond-Classic
     package:
-        name: The-Diamond-Classic
+        name: The-Diamond-ClassicTEST
         api_version: '55.0'
     git:
         default_branch: 'main'
