@@ -1,17 +1,20 @@
 {
-    "packageDirectories": [
-      {
-        "path": "force-app",
-        "default": true,
-        "package": "Diamond Classic Core",
-        "versionName": "ver 0.4",
-        "versionNumber": "0.4.0.NEXT",
-        "versionDescription": ""
-      }
-    ],
-    "namespace": null,
-    "sourceApiVersion": "55.0",
-    "packageAliases": {
-      "Diamond Classic Core": "0Ho5w0000004CfACAU"
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "Diamond Classic Core",
+      "versionName": "ver 1.1",
+      "versionNumber": "1.1.0.NEXT",
+      "versionDescription": ""
     }
+  ],
+  "namespace": null,
+  "sourceApiVersion": "55.0",
+  "packageAliases": {
+    "Diamond Classic Core": "0Ho5w0000004CfACAU"
+  },
+  "dependencies": {
+    "csca": "1.3"
   }
+}
