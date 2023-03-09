@@ -10,6 +10,9 @@ project:
         prefix_beta: 'beta/'
         prefix_release: 'release/'
     source_format: sfdx
+    dependencies:
+        - namespace: csca
+          version: 1.3
 
 tasks:
     robot:
