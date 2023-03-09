@@ -4,9 +4,9 @@ project:
         - namespace: csca
           version: 1.3
         - version_id: 04t6F000002YNcIQAW
-    name: The-Diamond-Classic
+    name: The-Diamond-Classic-TEST
     package:
-        name: The-Diamond-ClassicTEST
+        name: The-Diamond-Classic
         api_version: '55.0'
     git:
         default_branch: 'main'
