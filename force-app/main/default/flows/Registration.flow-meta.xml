@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Count_Nominated_Horses</name>
+        <label>Count Nominated Horses</label>
+        <locationX>1592</locationX>
+        <locationY>495</locationY>
+        <actionName>AffiliationQuery</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>AcceptPayment</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>leadIds</name>
+            <value>
+                <elementReference>Lead.Id</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>HorseCount</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
     <apiVersion>56.0</apiVersion>
     <assignments>
         <name>AssignLeadValues</name>
         <label>AssignLeadValues</label>
-        <locationX>1054</locationX>
+        <locationX>1163</locationX>
         <locationY>438</locationY>
         <assignmentItems>
             <assignToReference>Lead.FirstName</assignToReference>
@@ -90,8 +112,8 @@
     <assignments>
         <name>AssignLeadValues_0</name>
         <label>AssignLeadValues</label>
-        <locationX>1115</locationX>
-        <locationY>483</locationY>
+        <locationX>1166</locationX>
+        <locationY>558</locationY>
         <assignmentItems>
             <assignToReference>Lead.FirstName</assignToReference>
             <operator>Assign</operator>
@@ -174,26 +196,10 @@
         </connector>
     </assignments>
     <assignments>
-        <name>NumberofHorses</name>
-        <label>NumberofHorses</label>
-        <locationX>1682</locationX>
-        <locationY>375</locationY>
-        <assignmentItems>
-            <assignToReference>HorseCount</assignToReference>
-            <operator>AssignCount</operator>
-            <value>
-                <elementReference>GetAffiliations</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>AcceptPayment</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>ToggleValidationMessage</name>
         <label>ToggleValidationMessage</label>
-        <locationX>1837</locationX>
-        <locationY>246</locationY>
+        <locationX>1874</locationX>
+        <locationY>570</locationY>
         <assignmentItems>
             <assignToReference>ShowErrorMessage</assignToReference>
             <operator>Assign</operator>
@@ -224,8 +230,8 @@
     <decisions>
         <name>Accepted</name>
         <label>Accepted?</label>
-        <locationX>1887</locationX>
-        <locationY>377</locationY>
+        <locationX>2010</locationX>
+        <locationY>496</locationY>
         <defaultConnector>
             <targetReference>ToggleValidationMessage</targetReference>
         </defaultConnector>
@@ -241,7 +247,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>PaymentAmount</leftValueReference>
+                <leftValueReference>fxPaymentAmount</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <elementReference>TakePayment.chargeAmount</elementReference>
@@ -257,7 +263,7 @@
         <name>DoesLeadExist</name>
         <label>DoesLeadExist</label>
         <locationX>824</locationX>
-        <locationY>377</locationY>
+        <locationY>487</locationY>
         <defaultConnector>
             <targetReference>RegionValue</targetReference>
         </defaultConnector>
@@ -281,7 +287,7 @@
     <decisions>
         <name>RegionValue</name>
         <label>RegionValue</label>
-        <locationX>901</locationX>
+        <locationX>1010</locationX>
         <locationY>490</locationY>
         <defaultConnector>
             <targetReference>AssignLeadValues</targetReference>
@@ -306,14 +312,6 @@
     <description>A basic registration form for Farms and Stallion Stations</description>
     <environments>Default</environments>
     <formulas>
-        <name>Errorfx</name>
-        <dataType>String</dataType>
-        <expression>IF(
-{!TakePayment.chargeAmount}!={!PaymentAmount},&quot;Payment failed. Incorrect payment amount.&quot;,
-&quot;There was a problem with your payment. Please review and confirm your payment details.&quot;
-)</expression>
-    </formulas>
-    <formulas>
         <name>fxBusinessName</name>
         <dataType>String</dataType>
         <expression>IF(
@@ -323,7 +321,15 @@
 )</expression>
     </formulas>
     <formulas>
-        <name>PaymentAmount</name>
+        <name>fxError</name>
+        <dataType>String</dataType>
+        <expression>IF(
+{!TakePayment.chargeAmount}!={!fxPaymentAmount},&quot;Payment failed. Incorrect payment amount.&quot;,
+&quot;There was a problem with your payment. Please review and confirm your payment details.&quot;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>fxPaymentAmount</name>
         <dataType>Number</dataType>
         <expression>{!HorseCount}*250</expression>
         <scale>0</scale>
@@ -356,65 +362,20 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
-        <name>CreateApplication</name>
-        <label>CreateApplication</label>
-        <locationX>1331</locationX>
-        <locationY>375</locationY>
-        <connector>
-            <targetReference>Pedigree_Table_Screen</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>Lead__c</field>
-            <value>
-                <elementReference>Lead.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Application__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
         <name>createLead</name>
         <label>Lead</label>
-        <locationX>1206</locationX>
-        <locationY>375</locationY>
+        <locationX>1298</locationX>
+        <locationY>495</locationY>
         <connector>
-            <targetReference>CreateApplication</targetReference>
+            <targetReference>Pedigree_Table_Screen</targetReference>
         </connector>
         <inputReference>Lead</inputReference>
     </recordCreates>
     <recordLookups>
-        <name>GetAffiliations</name>
-        <label>GetAffiliations</label>
-        <locationX>1580</locationX>
-        <locationY>375</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>NumberofHorses</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Lead__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Lead.Id</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Nominated_to_Compete__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Affiliation__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>GetLead</name>
         <label>GetLead</label>
         <locationX>672</locationX>
-        <locationY>375</locationY>
+        <locationY>485</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>DoesLeadExist</targetReference>
@@ -435,8 +396,8 @@
     <screens>
         <name>AcceptPayment</name>
         <label>AcceptPayment</label>
-        <locationX>1782</locationX>
-        <locationY>375</locationY>
+        <locationX>1728</locationX>
+        <locationY>495</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -445,7 +406,7 @@
         </connector>
         <fields>
             <name>DisplayError</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;{!Errorfx}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;{!fxError}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -470,7 +431,7 @@
             <inputParameters>
                 <name>chargeAmount</name>
                 <value>
-                    <elementReference>PaymentAmount</elementReference>
+                    <elementReference>fxPaymentAmount</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -483,8 +444,8 @@
     <screens>
         <name>Lead_Details</name>
         <label>Lead Details</label>
-        <locationX>549</locationX>
-        <locationY>376</locationY>
+        <locationX>540</locationX>
+        <locationY>485</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -719,13 +680,13 @@
     <screens>
         <name>Pedigree_Table_Screen</name>
         <label>Pedigree Table Screen</label>
-        <locationX>1469</locationX>
-        <locationY>375</locationY>
+        <locationX>1452</locationX>
+        <locationY>495</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>GetAffiliations</targetReference>
+            <targetReference>Count_Nominated_Horses</targetReference>
         </connector>
         <fields>
             <name>PedigreeTableLWC</name>
@@ -747,8 +708,8 @@
     <screens>
         <name>Reject</name>
         <label>Reject</label>
-        <locationX>1057</locationX>
-        <locationY>316</locationY>
+        <locationX>831</locationX>
+        <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -763,8 +724,8 @@
     <screens>
         <name>Success_Page_0</name>
         <label>Success_Page</label>
-        <locationX>2157</locationX>
-        <locationY>378</locationY>
+        <locationX>2307</locationX>
+        <locationY>494</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -778,7 +739,7 @@
     </screens>
     <start>
         <locationX>50</locationX>
-        <locationY>356</locationY>
+        <locationY>466</locationY>
         <connector>
             <targetReference>Lead_Details</targetReference>
         </connector>
@@ -787,8 +748,8 @@
     <subflows>
         <name>Welcome_Email</name>
         <label>Welcome Email</label>
-        <locationX>2034</locationX>
-        <locationY>378</locationY>
+        <locationX>2171</locationX>
+        <locationY>494</locationY>
         <connector>
             <targetReference>Success_Page_0</targetReference>
         </connector>
