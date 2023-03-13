@@ -173,6 +173,38 @@
             <targetReference>createLead</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>NumberofHorses</name>
+        <label>NumberofHorses</label>
+        <locationX>1682</locationX>
+        <locationY>375</locationY>
+        <assignmentItems>
+            <assignToReference>HorseCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>GetAffiliations</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>AcceptPayment</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>ToggleValidationMessage</name>
+        <label>ToggleValidationMessage</label>
+        <locationX>1837</locationX>
+        <locationY>246</locationY>
+        <assignmentItems>
+            <assignToReference>ShowErrorMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>AcceptPayment</targetReference>
+        </connector>
+    </assignments>
     <choices>
         <name>Canada</name>
         <choiceText>Canada</choiceText>
@@ -189,6 +221,38 @@
             <stringValue>USA</stringValue>
         </value>
     </choices>
+    <decisions>
+        <name>Accepted</name>
+        <label>Accepted?</label>
+        <locationX>1887</locationX>
+        <locationY>377</locationY>
+        <defaultConnector>
+            <targetReference>ToggleValidationMessage</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>TakePayment.responseCode</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>200</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>PaymentAmount</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>TakePayment.chargeAmount</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Welcome_Email</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>DoesLeadExist</name>
         <label>DoesLeadExist</label>
@@ -242,6 +306,14 @@
     <description>A basic registration form for Farms and Stallion Stations</description>
     <environments>Default</environments>
     <formulas>
+        <name>Errorfx</name>
+        <dataType>String</dataType>
+        <expression>IF(
+{!TakePayment.chargeAmount}!={!PaymentAmount},&quot;Payment failed. Incorrect payment amount.&quot;,
+&quot;There was a problem with your payment. Please review and confirm your payment details.&quot;
+)</expression>
+    </formulas>
+    <formulas>
         <name>fxBusinessName</name>
         <dataType>String</dataType>
         <expression>IF(
@@ -249,6 +321,12 @@
 {!Business_Name},
 {!LeadFirst_Name} + &quot; &quot; + {!LeadLast_Name} + &quot;&apos;s Account&quot;
 )</expression>
+    </formulas>
+    <formulas>
+        <name>PaymentAmount</name>
+        <dataType>Number</dataType>
+        <expression>{!HorseCount}*250</expression>
+        <scale>0</scale>
     </formulas>
     <formulas>
         <name>Person_Account_Name</name>
@@ -305,6 +383,34 @@
         <inputReference>Lead</inputReference>
     </recordCreates>
     <recordLookups>
+        <name>GetAffiliations</name>
+        <label>GetAffiliations</label>
+        <locationX>1580</locationX>
+        <locationY>375</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>NumberofHorses</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Lead__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Lead.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Nominated_to_Compete__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Affiliation__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>GetLead</name>
         <label>GetLead</label>
         <locationX>672</locationX>
@@ -326,6 +432,54 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <runInMode>SystemModeWithoutSharing</runInMode>
+    <screens>
+        <name>AcceptPayment</name>
+        <label>AcceptPayment</label>
+        <locationX>1782</locationX>
+        <locationY>375</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Accepted</targetReference>
+        </connector>
+        <fields>
+            <name>DisplayError</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;{!Errorfx}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>ShowErrorMessage</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>PleaseEnterDetails</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Please enter your payment details below&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>TakePayment</name>
+            <extensionName>csca:FlowStripeCharger</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>chargeAmount</name>
+                <value>
+                    <elementReference>PaymentAmount</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <screens>
         <name>Lead_Details</name>
         <label>Lead Details</label>
@@ -571,7 +725,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Welcome_Email</targetReference>
+            <targetReference>GetAffiliations</targetReference>
         </connector>
         <fields>
             <name>PedigreeTableLWC</name>
@@ -609,8 +763,8 @@
     <screens>
         <name>Success_Page_0</name>
         <label>Success_Page</label>
-        <locationX>1794</locationX>
-        <locationY>375</locationY>
+        <locationX>2157</locationX>
+        <locationY>378</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -633,8 +787,8 @@
     <subflows>
         <name>Welcome_Email</name>
         <label>Welcome Email</label>
-        <locationX>1629</locationX>
-        <locationY>376</locationY>
+        <locationX>2034</locationX>
+        <locationY>378</locationY>
         <connector>
             <targetReference>Success_Page_0</targetReference>
         </connector>
@@ -702,11 +856,26 @@
         <objectType>AccountContactRole</objectType>
     </variables>
     <variables>
+        <name>HorseCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
         <name>Lead</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Lead</objectType>
+    </variables>
+    <variables>
+        <name>ShowErrorMessage</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>
